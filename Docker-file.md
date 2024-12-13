@@ -25,122 +25,113 @@
 
 ## Understanding each Dockerfile Instruction
 
-###	**FROM instruction**
+### FROM Instruction
+The `FROM` instruction specifies the base image from which the Docker image is built. Every Dockerfile must begin with a `FROM` statement, except for multistage builds where additional `FROM` instructions can appear later.
 
-The `FROM` instruction sets the Base Image for subsequent instructions. As such, a valid Dockerfile must have `FROM` as its first instruction. The image can be any valid image. It is especially easy to start by pulling an image from the Public Repositories.
-- `FROM` must be the first non-comment instruction in the Dockerfile.
-- `FROM` can appear multiple times within a single Dockerfile in order to create multiple images
+#### Use Cases
+- Defining a base operating system or application image
+- Building images in multiple stages
 
-- Usage:
+#### Example 1: Setting a Base Image
 ```
-FROM <image>
+FROM ubuntu:20.04
 ```
----
+This sets `ubuntu:20.04` as the base operating system for the Docker image.
 
- Or 
-
+#### Example 2: Using Multistage Builds
 ```
-FROM <image>:<tag>
+FROM node:14 AS builder
+WORKDIR /app
+COPY . .
+RUN npm install && npm run build  
+
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
 ```
----
 
-Or 
-
-```
-FROM <image>@<digest>
-```
----
-
-The tag or digest values are optional. If you omit either of them, the builder assumes a latest by default. The builder returns an error if it cannot match the tag value.
-
-###	**MAINTAINER Instruction**
-The `MAINTAINER` instruction allows you to set the Author field of the generated images.
-
-```
-MAINTAINER <name>
-```
----
-
-###	**ENV Instruction**
-The `ENV` instruction sets the environment variable <key> to the value. This value will be in the environment of all “descendant” Dockerfile commands and can be replaced inline in many as well. The ENV instruction has two forms.
-
-```
-ENV <key> <value> 
-```
----  
-
-```
-ENV <key>=<value> ...
-```
----
-
-- The first form, `ENV` <key> <value>, will set a single variable to a value. The entire string after the first space will be treated as the <value> - including characters such as spaces and quotes.
-- The second form, `ENV` <key>=<value> ..., allows for multiple variables to be set at one time. Notice that the second form uses the equals sign (=) in the syntax, while the first form does not.
-The environment variables set using `ENV` will persist when a container is run from the resulting image. 
-
-You can view the values using docker inspect, and change them using docker run --env <key>=<value>.
-
-###	ADD Instruction
-The `ADD` instruction copies files or directories from one location to another.
-When using Docker, there are a couple of use cases for `ADD`:
-
-- Copying files from your host machine to the image:
-
-```
-ADD hello.txt /some-dir/
-```
----
-
-This will copy `hello.txt` from your current directory on the host into `some-dir `in the image.
-
-- Copying directories recursively from your host machine to the image:
-
-```
-ADD . /app/
-```
----
-
-This will copy the entire current directory into `/app` in the image.
-
-###	COPY Instruction
-The `COPY` instruction copies new files or directories from `<src>` and adds them to the filesystem of the container at the path `<dest>`.
-
-The copy command has two forms,
-
-```
-COPY <src>... <dest> 
-```
----
-
-```
-COPY ["<src>",... "<dest>"] // (this form is required for paths containing whitespace)
-```
----
-
-Multiple `<src> `resource may be specified but they must be relative to the source directory that is being built (the context of the build).
-
-Each `<src>` may contain wildcards. For example
-
-```
-COPY hom* /mydir/        # adds all files starting with "hom" 
-```
----
-
-```
-COPY hom?.txt /mydir/    # ? is replaced with any single character, e.g., "home.txt"
-```
----
-
-The `<dest>` is an absolute path, or a path relative to WORKDIR, into which the source will be copied inside the destination container.
-
-```
-COPY test relativeDir/   # adds "test" to `WORKDIR`/relativeDir/ 
-```
+This uses a multistage build to create a production-ready web application using Node.js and Nginx.
 --- 
 
+### LABEL Instruction 
+The `LABEL` instruction was used to declare the author of the Dockerfile.
+
+#### Use Cases
+- Adding author information 
+- Using LABEL for metadata instead
+
+#### Example 1: Defining a Label 
 ```
-COPY test /absoluteDir/  # adds "test" to /absoluteDir/
+LABEL maintainer="John Doe <john.doe@example.com>"
 ```
+This declares `John Doe` as the Dockerfile maintainer.
+---
+
+### ENV Instruction
+The `ENV` instruction sets environment variables inside the Docker container. These variables persist across build stages and runtime, allowing for flexible configurations.
+
+#### Use Cases
+- Defining environment variables for configuration
+- Setting default values for apps
+
+#### Example 1: Setting Environment Variables
+```
+ENV APP_NAME="MyApp" PORT=8080
+```
+This sets `APP_NAME` to `MyApp` and `PORT` to `8080` inside the container.
+
+#### Example 2: Using Variables in Commands
+```
+ENV APP_HOME="/app"
+WORKDIR $APP_HOME
+```
+This sets the working directory to `/app` using the environment variable `APP_HOME`.
+---
+
+### ADD Instruction
+The `ADD` instruction copies files and directories from the host machine to the Docker container. Unlike `COPY`, it supports automatic extraction of compressed files `(.tar.gz)` and remote URLs.
+
+#### Use Cases
+- Copying files from the host system
+- Extracting archives automatically
+
+#### Example 1: Adding Files from Host to Container
+```
+ADD hello.txt /app/
+```
+This copies `hello.txt` from the current directory on the host to `/app` in the container.
+
+#### Example 2: Extracting Archives
+```
+ADD archive.tar.gz /app/
+```
+
+This extracts `archive.tar.gz` into the `/app` directory inside the container.
+
+#### Best Practice
+Use `COPY` unless you specifically need archive extraction or `URL` downloads.
+---
+
+### COPY Instruction
+The `COPY` instruction copies files and directories from the host machine to the Docker container. It is simpler and more predictable than `ADD`, making it the recommended way to copy files in most cases.
+
+#### Use Cases
+- Copying files and directories securely
+- Avoiding unwanted archive extraction
+
+#### Example 1: Copying Files from Host to Container
+```
+COPY config.json /app/
+```
+This copies `config.json` from the build context on the host to `/app` in the container.
+
+#### Example 2: Copying a Directory
+```
+COPY . /app
+```
+This copies the entire current directory to `/app` in the container.
+
+#### Best Practice
+Always use `COPY` unless `ADD`'s extra features (like archive extraction) are explicitly required.
 ---
 
 ### RUN Instruction
@@ -164,6 +155,7 @@ RUN ./setup.sh
 ```
 
 This runs the setup.sh script from the Docker build context.
+---
 
 ### ENTRYPOINT Instruction
 The `ENTRYPOINT` instruction specifies the main application or command that runs when the container starts. Unlike `CMD`, it cannot be easily overridden at runtime unless the container is run with additional arguments.
@@ -183,6 +175,7 @@ This sets nginx as the container's main process and prevents it from running in 
 ENTRYPOINT ["/app/start.sh"]
 ```
 This ensures start.sh is always executed when the container runs.
+---
 
 ### CMD Instruction
 The `CMD` instruction provides default arguments for the container. It is overridden if arguments are passed when running the container. Use it for commands that are optional or flexible.
@@ -202,6 +195,7 @@ This prints "Hello, Docker!" unless a different command is provided.
 CMD ["python3", "app.py"]
 ```
 This runs app.py unless another script is specified at runtime.
+---
 
 ### USER Instruction
 The `USER` instruction specifies the user under which the container should run. Running containers as root is risky, so it’s recommended to use a non-root user.
@@ -221,6 +215,7 @@ This ensures the container runs processes as appuser, reducing security risks.
 USER 1001
 ```
 This uses the system user with UID 1001 to run processes.
+---
 
 ### WORKDIR Instruction
 The `WORKDIR` instruction sets the working directory for all subsequent `RUN`, `CMD`, `ENTRYPOINT`, and other instructions. It simplifies file path management during builds.
@@ -241,6 +236,7 @@ WORKDIR /usr/src/app
 RUN npm install
 ```
 This installs npm packages from /usr/src/app.
+---
 
 ### EXPOSE Instruction
 The `EXPOSE` instruction informs Docker that the container listens on specified network ports at runtime. It does not publish ports automatically but serves as documentation and assists with port binding.
@@ -260,6 +256,7 @@ This indicates the container listens on port 80, commonly used by web servers.
 EXPOSE 8080 443
 ```
 This exposes both HTTP (8080) and HTTPS (443) ports.
+---
 
 ### VOLUME Instruction
 The `VOLUME` instruction creates a mount point with a specific path and allows persistent data storage outside the container. It’s useful for maintaining data consistency.
@@ -279,6 +276,7 @@ This creates a volume at /data that persists even if the container is removed.
 VOLUME ["/app/config"]
 ```
 This stores configuration files outside the container for persistent use.
+---
 
 ### ARG Instruction
 The `ARG` instruction defines build-time variables that can be passed when running docker build. It’s useful for customizing builds without hardcoding values.
@@ -300,6 +298,7 @@ RUN echo "Building version $VERSION"
 ```
 
 This prints the provided version during the build.
+---
 
 ### ONBUILD Instruction
 The `ONBUILD` instruction triggers specific commands when the image is used as a base for other Dockerfiles. It’s great for setting up pre-configured environments.
@@ -319,6 +318,7 @@ When another Dockerfile extends this image, the current directory is copied to /
 ONBUILD RUN npm install
 ```
 This automatically installs dependencies if a derived image includes package.json.
+---
 
 ### STOPSIGNAL Instruction
 The `STOPSIGNAL` instruction defines the system signal used to stop the container gracefully. By default, Docker sends SIGTERM but can be customized.
