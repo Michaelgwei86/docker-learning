@@ -51,7 +51,6 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 This uses a multistage build to create a production-ready web application using Node.js and Nginx.
 --- 
-
 ### LABEL Instruction 
 The `LABEL` instruction was used to declare the author of the Dockerfile.
 
@@ -65,7 +64,6 @@ LABEL maintainer="John Doe <john.doe@example.com>"
 ```
 This declares `John Doe` as the Dockerfile maintainer.
 ---
-
 ### ENV Instruction
 The `ENV` instruction sets environment variables inside the Docker container. These variables persist across build stages and runtime, allowing for flexible configurations.
 
@@ -86,7 +84,6 @@ WORKDIR $APP_HOME
 ```
 This sets the working directory to `/app` using the environment variable `APP_HOME`.
 ---
-
 ### ADD Instruction
 The `ADD` instruction copies files and directories from the host machine to the Docker container. Unlike `COPY`, it supports automatic extraction of compressed files `(.tar.gz)` and remote URLs.
 
@@ -133,7 +130,6 @@ This copies the entire current directory to `/app` in the container.
 #### Best Practice
 Always use `COPY` unless `ADD`'s extra features (like archive extraction) are explicitly required.
 ---
-
 ### RUN Instruction
 The `RUN` instruction is used to execute commands in a new layer on top of the current image and commit the results. It is commonly used for installing software packages, configuring services, or running scripts during the Docker image build process.
 
@@ -156,7 +152,6 @@ RUN ./setup.sh
 
 This runs the setup.sh script from the Docker build context.
 ---
-
 ### ENTRYPOINT Instruction
 The `ENTRYPOINT` instruction specifies the main application or command that runs when the container starts. Unlike `CMD`, it cannot be easily overridden at runtime unless the container is run with additional arguments.
 
@@ -176,7 +171,6 @@ ENTRYPOINT ["/app/start.sh"]
 ```
 This ensures start.sh is always executed when the container runs.
 ---
-
 ### CMD Instruction
 The `CMD` instruction provides default arguments for the container. It is overridden if arguments are passed when running the container. Use it for commands that are optional or flexible.
 
@@ -196,7 +190,6 @@ CMD ["python3", "app.py"]
 ```
 This runs app.py unless another script is specified at runtime.
 ---
-
 ### USER Instruction
 The `USER` instruction specifies the user under which the container should run. Running containers as root is risky, so it’s recommended to use a non-root user.
 
@@ -216,7 +209,6 @@ USER 1001
 ```
 This uses the system user with UID 1001 to run processes.
 ---
-
 ### WORKDIR Instruction
 The `WORKDIR` instruction sets the working directory for all subsequent `RUN`, `CMD`, `ENTRYPOINT`, and other instructions. It simplifies file path management during builds.
 
@@ -237,7 +229,6 @@ RUN npm install
 ```
 This installs npm packages from /usr/src/app.
 ---
-
 ### EXPOSE Instruction
 The `EXPOSE` instruction informs Docker that the container listens on specified network ports at runtime. It does not publish ports automatically but serves as documentation and assists with port binding.
 
@@ -257,7 +248,6 @@ EXPOSE 8080 443
 ```
 This exposes both HTTP (8080) and HTTPS (443) ports.
 ---
-
 ### VOLUME Instruction
 The `VOLUME` instruction creates a mount point with a specific path and allows persistent data storage outside the container. It’s useful for maintaining data consistency.
 
@@ -277,7 +267,6 @@ VOLUME ["/app/config"]
 ```
 This stores configuration files outside the container for persistent use.
 ---
-
 ### ARG Instruction
 The `ARG` instruction defines build-time variables that can be passed when running docker build. It’s useful for customizing builds without hardcoding values.
 
@@ -299,7 +288,6 @@ RUN echo "Building version $VERSION"
 
 This prints the provided version during the build.
 ---
-
 ### ONBUILD Instruction
 The `ONBUILD` instruction triggers specific commands when the image is used as a base for other Dockerfiles. It’s great for setting up pre-configured environments.
 
@@ -319,7 +307,6 @@ ONBUILD RUN npm install
 ```
 This automatically installs dependencies if a derived image includes package.json.
 ---
-
 ### STOPSIGNAL Instruction
 The `STOPSIGNAL` instruction defines the system signal used to stop the container gracefully. By default, Docker sends SIGTERM but can be customized.
 
