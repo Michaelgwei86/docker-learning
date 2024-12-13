@@ -25,7 +25,8 @@
 
 ## Understanding each Dockerfile Instruction
 
-1.	**FROM instruction**
+###	**FROM instruction**
+
 The `FROM` instruction sets the Base Image for subsequent instructions. As such, a valid Dockerfile must have `FROM` as its first instruction. The image can be any valid image. It is especially easy to start by pulling an image from the Public Repositories.
 - `FROM` must be the first non-comment instruction in the Dockerfile.
 - `FROM` can appear multiple times within a single Dockerfile in order to create multiple images
@@ -52,7 +53,7 @@ FROM <image>@<digest>
 
 The tag or digest values are optional. If you omit either of them, the builder assumes a latest by default. The builder returns an error if it cannot match the tag value.
 
-2.	**MAINTAINER Instruction**
+###	**MAINTAINER Instruction**
 The `MAINTAINER` instruction allows you to set the Author field of the generated images.
 
 ```
@@ -60,7 +61,7 @@ MAINTAINER <name>
 ```
 ---
 
-3.	**ENV Instruction**
+###	**ENV Instruction**
 The `ENV` instruction sets the environment variable <key> to the value. This value will be in the environment of all “descendant” Dockerfile commands and can be replaced inline in many as well. The ENV instruction has two forms.
 
 ```
@@ -79,7 +80,7 @@ The environment variables set using `ENV` will persist when a container is run f
 
 You can view the values using docker inspect, and change them using docker run --env <key>=<value>.
 
-4.	**ADD Instruction**
+###	ADD Instruction
 The `ADD` instruction copies files or directories from one location to another.
 When using Docker, there are a couple of use cases for `ADD`:
 
@@ -101,7 +102,7 @@ ADD . /app/
 
 This will copy the entire current directory into `/app` in the image.
 
-5.	**COPY Instruction**
+###	COPY Instruction
 The `COPY` instruction copies new files or directories from `<src>` and adds them to the filesystem of the container at the path `<dest>`.
 
 The copy command has two forms,
@@ -141,6 +142,202 @@ COPY test relativeDir/   # adds "test" to `WORKDIR`/relativeDir/
 COPY test /absoluteDir/  # adds "test" to /absoluteDir/
 ```
 ---
+
+### RUN Instruction
+The `RUN` instruction is used to execute commands in a new layer on top of the current image and commit the results. It is commonly used for installing software packages, configuring services, or running scripts during the Docker image build process.
+
+#### Use Cases
+- Install system packages
+- Download dependencies
+- Configure system settings
+
+#### Example 1: Installing Packages
+```
+RUN apt-get update && apt-get install -y nginx
+```
+
+This updates the package list and installs nginx in the Docker container.
+
+#### Example 2: Running a Script
+```
+RUN ./setup.sh
+```
+
+This runs the setup.sh script from the Docker build context.
+
+### ENTRYPOINT Instruction
+The `ENTRYPOINT` instruction specifies the main application or command that runs when the container starts. Unlike `CMD`, it cannot be easily overridden at runtime unless the container is run with additional arguments.
+
+### Use Cases
+- Setting the primary executable for the container
+- Defining fixed services or commands
+
+#### Example 1: Running a Web Server
+```
+ENTRYPOINT ["/usr/sbin/nginx", "-g", "daemon off;"]
+```
+This sets nginx as the container's main process and prevents it from running in the background.
+
+#### Example 2: Running a Custom Script
+```
+ENTRYPOINT ["/app/start.sh"]
+```
+This ensures start.sh is always executed when the container runs.
+
+### CMD Instruction
+The `CMD` instruction provides default arguments for the container. It is overridden if arguments are passed when running the container. Use it for commands that are optional or flexible.
+
+### Use Cases
+- Providing default commands or scripts
+- Setting container startup configurations
+
+#### Example 1: Default Message Output
+```
+CMD ["echo", "Hello, Docker!"]
+```
+This prints "Hello, Docker!" unless a different command is provided.
+
+#### Example 2: Starting an App
+```
+CMD ["python3", "app.py"]
+```
+This runs app.py unless another script is specified at runtime.
+
+### USER Instruction
+The `USER` instruction specifies the user under which the container should run. Running containers as root is risky, so it’s recommended to use a non-root user.
+
+#### Use Cases
+- Improving container security
+- Limiting system access
+
+#### Example 1: Switching to a Non-Root User
+```
+USER appuser
+```
+This ensures the container runs processes as appuser, reducing security risks.
+
+#### Example 2: Using a System UID
+```
+USER 1001
+```
+This uses the system user with UID 1001 to run processes.
+
+### WORKDIR Instruction
+The `WORKDIR` instruction sets the working directory for all subsequent `RUN`, `CMD`, `ENTRYPOINT`, and other instructions. It simplifies file path management during builds.
+
+#### Use Cases
+- Managing file paths
+- Simplifying file structure
+
+#### Example 1: Setting a Work Directory
+```
+WORKDIR /app
+```
+This sets /app as the default directory for any following instructions.
+
+#### Example 2: Running Commands in a Specific Directory
+```
+WORKDIR /usr/src/app
+RUN npm install
+```
+This installs npm packages from /usr/src/app.
+
+### EXPOSE Instruction
+The `EXPOSE` instruction informs Docker that the container listens on specified network ports at runtime. It does not publish ports automatically but serves as documentation and assists with port binding.
+
+#### Use Cases
+- Defining exposed service ports
+- Documenting service configurations
+
+#### Example 1: Exposing a Web Server Port
+```
+EXPOSE 80
+```
+This indicates the container listens on port 80, commonly used by web servers.
+
+#### Example 2: Multiple Ports
+```
+EXPOSE 8080 443
+```
+This exposes both HTTP (8080) and HTTPS (443) ports.
+
+### VOLUME Instruction
+The `VOLUME` instruction creates a mount point with a specific path and allows persistent data storage outside the container. It’s useful for maintaining data consistency.
+
+#### Use Cases:
+- Data persistence
+- Sharing files between containers
+
+#### Example 1: Defining a Persistent Volume
+```
+VOLUME /data
+```
+This creates a volume at /data that persists even if the container is removed.
+
+#### Example 2: Mounting Configuration Files
+```
+VOLUME ["/app/config"]
+```
+This stores configuration files outside the container for persistent use.
+
+### ARG Instruction
+The `ARG` instruction defines build-time variables that can be passed when running docker build. It’s useful for customizing builds without hardcoding values.
+
+#### Use Cases
+- Setting build-specific values
+- Customizing environment variables
+
+#### Example 1: Defining a Build Argument
+```
+ARG VERSION=1.0
+```
+This defines a build argument VERSION, which can be overridden during the build.
+
+#### Example 2: Using ARG in RUN
+```
+ARG VERSION
+RUN echo "Building version $VERSION"
+```
+
+This prints the provided version during the build.
+
+### ONBUILD Instruction
+The `ONBUILD` instruction triggers specific commands when the image is used as a base for other Dockerfiles. It’s great for setting up pre-configured environments.
+
+#### Use Cases
+- Automating image extensions
+- Pre-setting configurations
+
+#### Example 1: Adding Files Automatically
+```
+ONBUILD ADD . /app
+```
+When another Dockerfile extends this image, the current directory is copied to /app automatically.
+
+#### Example 2: Pre-Installing Dependencies
+```
+ONBUILD RUN npm install
+```
+This automatically installs dependencies if a derived image includes package.json.
+
+### STOPSIGNAL Instruction
+The `STOPSIGNAL` instruction defines the system signal used to stop the container gracefully. By default, Docker sends SIGTERM but can be customized.
+
+#### Use Cases
+- Handling graceful shutdowns
+- Customizing termination signals
+
+#### Example 1: Custom Stop Signal
+```
+STOPSIGNAL SIGQUIT
+```
+This ensures the container receives the SIGQUIT signal on shutdown.
+
+#### Example 2: Managing App Shutdowns
+```
+STOPSIGNAL SIGTERM
+```
+This gracefully stops processes using the `SIGTERM` signal.
 
 
 
