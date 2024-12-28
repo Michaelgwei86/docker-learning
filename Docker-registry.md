@@ -23,68 +23,63 @@ A version identifier for an image (e.g., `v1.0`, `stable`, or `latest`).
 ## Docker Registry Commands
 Below is a list of Docker registry-related commands, their descriptions, use cases, and examples tailored with your Docker Hub username michaelgwei86:
 
-1. **Docker Login**
-- ***Description***: Authenticate to a Docker registry (e.g., Docker Hub or private registry).
-- ***Command***
+1. **Docker Login**: Authenticate to a Docker registry (e.g., Docker Hub or private registry).
+***Command***
 ```
 docker login 
 ```
-- ***Explanation***:
+***Explanation***:
 * Prompts for `username` and `password`.
 * Required before pushing or pulling private images.
 
-2. **Docker Pull**
-- ***Description***: Download an image from a registry to your local machine.
-- ***Command***
+2. **Docker Pull**; Download an image from a registry to your local machine.
+***Command***
 ```
 docker pull <image-name>:<tag>
 ```
-- ***Example***
+***Example***
 ```
 docker pull michaelgwei86/my-app:latest
 ```
 
-- ***Explanation***
+***Explanation***
 Downloads the `my-app` image with the latest `tag` from your Docker Hub account.
 
-3. **Docker Push**
-Description: Upload a locally built image to a registry.
-- ***Command***
+3. **Docker Push**: Upload a locally built image to a registry.
+***Command***
 ```
 docker push <image-name>:<tag>
 ```
-- ***Example***
+***Example***
 ```
 docker push michaelgwei86/my-app:v1.0
 ```
-- ***Explanation***:
+***Explanation***:
 Pushes the `my-app:v1.0` image to your Docker Hub repository.
 
 
-4. **Docker Build and Push to Docker Hub**
-- ***Description***: Build a Docker image locally and push it to your Docker Hub account.
+4. **Docker Build and Push to Docker Hub**: Build a Docker image locally and push it to your Docker Hub account.
 
-- ***Commands***:
+***Commands***:
 ```
 docker build -t <username>/<image-name>:<tag> .
 docker push <username>/<image-name>:<tag>
 ```
 
-- ***Example***
+***Example***
 ```
 docker build -t michaelgwei86/my-app:v1 .
 docker push michaelgwei86/my-app:v1
 ```
-- ***Explanation***
+***Explanation***
 Builds an image from the current directory and tags it for your Docker Hub account.
 Pushes the built image to your Docker Hub repository.
 
-5. **Docker Logout**
-- ***Description***: Log out of a Docker registry.
+5. **Docker Logout**: Log out of a Docker registry.
 
-- ***Command***
+***Command***
 ```
 docker logout
 ```
-- ***Explanation***
+***Explanation***
 Removes stored authentication credentials for Docker Hub.
