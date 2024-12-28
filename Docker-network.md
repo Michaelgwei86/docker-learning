@@ -22,7 +22,7 @@ docker exec -it container1 ping container2
 - `docker exec`: Verifies communication between the two containers using ping.
 
 **Use Case**: The bridge network is suitable for running multi-container applications on a single Docker host.
-
+---
 
 2. **Host Network**
 The container shares the host's network stack and uses the host's IP address and ports. The container does not get its own IP address.
@@ -37,7 +37,7 @@ curl http://localhost
 - The curl command accesses `nginx` at http://localhost since the container shares the host's network.
 
 **Use Case**: The host network is ideal for performance-sensitive applications, such as proxies or applications that need direct access to the host's network stack.
-
+---
 
 3. **None Network**
 
@@ -83,44 +83,44 @@ docker network rm <network-name>
 
 Docker allows fine-grained management of container connections within networks. Below are the key actions you can perform.
 
-1. **Connecting a Container to a Network**
+1. #### Connecting a Container to a Network
 You can connect an existing container to a Docker network.
 
-#### Command
+**Command**
 ```
 docker network connect <network-name> <container-name>
 ```
 
-- Example
+**Example**
 ```
 docker network connect app-network web
 ```
 
-#### Explanation
+**Explanation**
 The `web` container, originally not part of `app-network`, is now connected to it.
 This enables web to communicate with other containers in `app-network`.
 
 **Use Case**: Useful when a container must access services on another network without restarting.
 
-2. **Disconnecting a Container from a Network**
+2. #### Disconnecting a Container from a Network
 You can remove a container from a Docker network.
 
-#### Command
+**Command**
 ```
 docker network disconnect <network-name> <container-name>
 ```
-- Example
+**Example**
 ```
 docker network disconnect app-network db
 ```
-#### Explanation:
+**Explanation**:
 - The `db` container is now isolated and cannot communicate with containers in `app-network`.
 
 **Use Case**: Useful for debugging or enforcing network segmentation in multi-container applications.
 
-3. **Inspecting a Container’s Network Connections**
+3. #### Inspecting a Container’s Network Connections
 You can view a container's network details, including the networks it is connected to.
-#### Command
+**Command**
 ```
 docker inspect <container-name>
 ```
@@ -129,49 +129,50 @@ docker inspect <container-name>
 docker inspect web
 ```
 
-#### Explanation
+**Explanation**
 Outputs detailed information about the web container, including its IP address, network interfaces, and connected networks.
 
 **Use Case**: Useful for troubleshooting connectivity or verifying network configurations.
 
-4. **Listing All Containers in a Network**
+4. #### Listing All Containers in a Network
 You can view all containers connected to a specific network.
 
-#### Command
+**Command**
 ```
 docker network inspect <network-name>
 ```
-- Example
+**Example**
 
 docker network inspect app-network
 
-#### Explanation
+**Explanation**
 - Displays all containers connected to app-network, their IP addresses, and other configuration details.
 
 **Use Case**: Helps monitor and manage container membership in networks.
 
-5. **Running a Container on a Specific Network**
+5. #### Running a Container on a Specific Network
 
 When starting a container, you can directly specify the network it should use.
 
-#### Command
+**Command**
 ```
 docker run --rm --name <container-name> --network <network-name> <image>
 ```
-- Example
+**Example**
 ```
 docker run --rm --name test-app --network dev-network alpine ping web
 ```
-#### Explanation
+**Explanation**
 - Launches the test-app container on dev-network and tests connectivity to the web container.
 **Use Case:** Streamlines workflow by ensuring containers are part of the correct network at startup.
 
 
 ## Docker network excersises 
 
-1. **Scenario 1**: Deploying a web application and its database using a custom network.
+1. #### Scenario 1: 
+Deploying a web application and its database using a custom network.
 
-#### Commands
+**Commands**
 
 - Create a custom network
 ```
@@ -188,13 +189,14 @@ docker run -d --name db --network app-network postgres
 ```
 docker exec -it web ping db
 ```
-#### Explanation:
+**Explanation**:
 
 The `app-network` isolates the application from other networks.
 Containers (`web` and `db`) communicate securely within the `custom` network.
 **Use Case**: This setup is ideal for multi-container applications requiring isolated communication between components (e.g., a web server and a database).
 
-2. **Scenario 2**: Isolating Development and Testing
+2. #### Scenario 2: 
+Isolating Development and Testing
 
 - Create separate networks for development and testing environments:
 ```
