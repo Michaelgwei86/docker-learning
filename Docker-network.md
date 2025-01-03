@@ -21,8 +21,8 @@ docker exec -it container1 ping container2
 - `docker run`: Launches two containers (`nginx` and `httpd`) on the default bridge network.
 - `docker exec`: Verifies communication between the two containers using ping.
 
-**Use Case**: The bridge network is suitable for running multi-container applications on a single Docker host.
----
+*Use Case*: The bridge network is suitable for running multi-container applications on a single Docker host.
+
 
 2. **Host Network**
 The container shares the host's network stack and uses the host's IP address and ports. The container does not get its own IP address.
@@ -36,8 +36,7 @@ curl http://localhost
 - The `nginx` container runs using the host network.
 - The curl command accesses `nginx` at http://localhost since the container shares the host's network.
 
-**Use Case**: The host network is ideal for performance-sensitive applications, such as proxies or applications that need direct access to the host's network stack.
----
+*Use Case*: The host network is ideal for performance-sensitive applications, such as proxies or applications that need direct access to the host's network stack.
 
 3. **None Network**
 
@@ -53,8 +52,7 @@ docker run --rm --network none alpine ping google.com
 - The `alpine` container is started with the `none` network driver.
 - The `ping` command fails as the container lacks network access.
 
-**Use Case**: The none network is useful for running offline tasks or applications that do not require network communication.
-
+*Use Case*: The none network is useful for running offline tasks or applications that do not require network communication.
 
 
 ## Managing Docker Networks
@@ -83,7 +81,7 @@ docker network rm <network-name>
 
 Docker allows fine-grained management of container connections within networks. Below are the key actions you can perform.
 
-1. #### Connecting a Container to a Network
+#### Connecting a Container to a Network
 You can connect an existing container to a Docker network.
 
 **Command**
@@ -102,7 +100,7 @@ This enables web to communicate with other containers in `app-network`.
 
 **Use Case**: Useful when a container must access services on another network without restarting.
 
-2. #### Disconnecting a Container from a Network
+#### Disconnecting a Container from a Network
 You can remove a container from a Docker network.
 
 **Command**
@@ -118,7 +116,7 @@ docker network disconnect app-network db
 
 **Use Case**: Useful for debugging or enforcing network segmentation in multi-container applications.
 
-3. #### Inspecting a Container’s Network Connections
+#### Inspecting a Container’s Network Connections
 You can view a container's network details, including the networks it is connected to.
 **Command**
 ```
@@ -134,7 +132,7 @@ Outputs detailed information about the web container, including its IP address, 
 
 **Use Case**: Useful for troubleshooting connectivity or verifying network configurations.
 
-4. #### Listing All Containers in a Network
+#### Listing All Containers in a Network
 You can view all containers connected to a specific network.
 
 **Command**
@@ -150,7 +148,7 @@ docker network inspect app-network
 
 **Use Case**: Helps monitor and manage container membership in networks.
 
-5. #### Running a Container on a Specific Network
+#### Running a Container on a Specific Network
 
 When starting a container, you can directly specify the network it should use.
 
@@ -167,9 +165,9 @@ docker run --rm --name test-app --network dev-network alpine ping web
 **Use Case:** Streamlines workflow by ensuring containers are part of the correct network at startup.
 
 
-## Docker network excersises 
+## Docker Network Excersises 
 
-1. #### Scenario 1: 
+#### Scenario 1: 
 Deploying a web application and its database using a custom network.
 
 **Commands**
@@ -195,7 +193,7 @@ The `app-network` isolates the application from other networks.
 Containers (`web` and `db`) communicate securely within the `custom` network.
 **Use Case**: This setup is ideal for multi-container applications requiring isolated communication between components (e.g., a web server and a database).
 
-2. #### Scenario 2: 
+#### Scenario 2: 
 Isolating Development and Testing
 
 - Create separate networks for development and testing environments:
