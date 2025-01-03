@@ -15,7 +15,13 @@ Containers in the bridge network can communicate with each other using container
 docker network ls  # List all networks
 docker run -d --name container1 --network bridge nginx
 docker run -d --name container2 --network bridge httpd
-docker exec -it container1 ping container2
+docker inspect container1
+docker inspect container 2
+docker exec -it container1 bash
+apt update -y
+apt-get install iputils-ping -y  
+ping container 2
+
 ```
 #### Explanation
 
@@ -31,12 +37,12 @@ The container shares the host's network stack and uses the host's IP address and
 
 #### Commands
 ```
-docker run --rm --network host nginx
-curl http://localhost
+docker run -d --name container3 --network host nginx
+curl http://public_ip
 ```
 #### Explanation
 - The `nginx` container runs using the host network.
-- The curl command accesses `nginx` at http://localhost since the container shares the host's network.
+- The curl command accesses `nginx` at http://public_ip since the container shares the host's network.
 
 *Use Case*: The host network is ideal for performance-sensitive applications, such as proxies or applications that need direct access to the host's network stack.
 
