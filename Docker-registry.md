@@ -55,10 +55,12 @@ docker push <image-name>:<tag>
 docker push michaelgwei86/my-app:v1.0
 ```
 ***Explanation***:
-Pushes the `my-app:v1.0` image to your Docker Hub repository.
+Pushes the `my-app:v1.0` image to the `michaelgwei86/` Docker Hub repository.
 
 
-4. **Docker Build and Push to Docker Hub**: Build a Docker image locally and push it to your Docker Hub account.
+4. **Docker Build and Push to Docker Hub**
+
+Build a Docker image locally and push it to your Docker Hub account.
 
 ***Commands***:
 ```
