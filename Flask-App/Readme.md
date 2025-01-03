@@ -21,12 +21,31 @@ COPY app.py .
 CMD ["python3", "app.py"]
 ```
 
-3. Build the image, tagging it with your dockerhub username e.g michaelgwei86/jjtech-flask-app:v1 
+3. Create the python application using the `app.py` codes
+
+```
+import os
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def main():
+    return "Welcome to Docker Class at JJTECH!"
+
+@app.route('/how are you')
+def hello():
+    return 'I sure do good prof. How about you?'
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)                            
+```
+
+4. Build the image, tagging it with your dockerhub username e.g `michaelgwei86/jjtech-flask-app:v1` 
 ```
 docker build -t michaelgwei86/jjtech-python-app:v1 .
 ```
 
-4. Create a container from your above image.
+5. Create a container from your above image.
 
 ```
 docker run --name jjtech-flask-image -d -p 8080:8080 b3c0284794c4
