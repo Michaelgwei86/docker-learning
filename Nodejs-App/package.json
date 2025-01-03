@@ -1,0 +1,15 @@
+{
+    "name": "jjtech-nodejs-image",
+    "version": "1.0.0",
+    "description": "JJTech Demo App",
+    "author": "DevopswithMike <www.devopswithmike.tech>", 
+    "license": "MIT",
+    "main": "app.js",
+    "keywords": [
+    "nodejs", 
+    "bootstrap", 
+    "express"
+    ], 
+    "dependencies": {
+    "express": "^4.16.4" }
+}
