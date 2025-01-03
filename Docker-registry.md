@@ -21,7 +21,7 @@ A collection of related Docker images identified by `tags` (e.g., `nginx:latest`
 A version identifier for an image (e.g., `v1.0`, `stable`, or `latest`).
 
 ## Docker Registry Commands
-Below is a list of Docker registry-related commands, their descriptions, use cases, and examples tailored with your Docker Hub username michaelgwei86:
+Below is a list of Docker registry-related commands, their descriptions, use cases, and examples tailored with a Docker Hub username `michaelgwei86`:
 
 1. **Docker Login**: Authenticate to a Docker registry (e.g., Docker Hub or private registry).
 ***Command***

@@ -81,7 +81,7 @@ docker network rm <network-name>
 
 Docker allows fine-grained management of container connections within networks. Below are the key actions you can perform.
 
-#### Connecting a Container to a Network
+1. **Connecting a Container to a Network**
 You can connect an existing container to a Docker network.
 
 **Command**
@@ -100,7 +100,7 @@ This enables web to communicate with other containers in `app-network`.
 
 **Use Case**: Useful when a container must access services on another network without restarting.
 
-#### Disconnecting a Container from a Network
+2. **Disconnecting a Container from a Network**
 You can remove a container from a Docker network.
 
 **Command**
@@ -116,7 +116,7 @@ docker network disconnect app-network db
 
 **Use Case**: Useful for debugging or enforcing network segmentation in multi-container applications.
 
-#### Inspecting a Container’s Network Connections
+3. **Inspecting a Container’s Network Connections**
 You can view a container's network details, including the networks it is connected to.
 **Command**
 ```
@@ -132,7 +132,7 @@ Outputs detailed information about the web container, including its IP address, 
 
 **Use Case**: Useful for troubleshooting connectivity or verifying network configurations.
 
-#### Listing All Containers in a Network
+4. **Listing All Containers in a Network**
 You can view all containers connected to a specific network.
 
 **Command**
@@ -148,7 +148,7 @@ docker network inspect app-network
 
 **Use Case**: Helps monitor and manage container membership in networks.
 
-#### Running a Container on a Specific Network
+5. **Running a Container on a Specific Network**
 
 When starting a container, you can directly specify the network it should use.
 
@@ -167,7 +167,7 @@ docker run --rm --name test-app --network dev-network alpine ping web
 
 ## Docker Network Excersises 
 
-#### Scenario 1: 
+1. **Scenario 1**
 Deploying a web application and its database using a custom network.
 
 **Commands**
@@ -193,7 +193,7 @@ The `app-network` isolates the application from other networks.
 Containers (`web` and `db`) communicate securely within the `custom` network.
 **Use Case**: This setup is ideal for multi-container applications requiring isolated communication between components (e.g., a web server and a database).
 
-#### Scenario 2: 
+2. **Scenario 2**
 Isolating Development and Testing
 
 - Create separate networks for development and testing environments:
