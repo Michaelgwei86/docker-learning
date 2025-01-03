@@ -1,7 +1,7 @@
 # Docker Networking Overview
 Docker networks allow containers to communicate with each other, the host system, and external systems. It provides various network drivers to cater to different use cases. Below is a detailed explanation of Docker's network types and respective commands with use cases and examples.
 
-![Docker Network](https://miro.medium.com/v2/resize:fit:1400/1*OTLU6kstNgX7o_yR7HQVdA.png)
+![Docker Network](https://media.geeksforgeeks.org/wp-content/uploads/20230419172809/Docker-network-1.webp)
 
 ## Types of Docker Networks
 
