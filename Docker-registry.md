@@ -82,20 +82,35 @@ Build a Docker image locally and push it to your Docker Hub account.
 
 ***Commands***
 
+- Building the image
+
 ```
 docker build -t <username>/<image-name>:<tag> .
+```
+
+- Pushing the image to Dockerhub
+
+```
 docker push <username>/<image-name>:<tag>
 ```
 
 ***Example***
+
+- Building the image
 ```
 docker build -t michaelgwei86/my-app:v1 .
+```
+
+- Pushing the image to Dockerhub
+
+```
 docker push michaelgwei86/my-app:v1
+
 ```
 ***Explanation***
 
-Builds an image from the current directory and tags it for your Docker Hub account.
-Pushes the built image to your Docker Hub repository.
+- Builds an image from the current directory and tags it for your Docker Hub account.
+- Pushes the built image to your Docker Hub repository.
 
 5. **Docker Logout**
 
@@ -106,4 +121,5 @@ Log out of a Docker registry.
 docker logout
 ```
 ***Explanation***
-Removes stored authentication credentials for Docker Hub.
+
+- Removes stored authentication credentials for Docker Hub.
