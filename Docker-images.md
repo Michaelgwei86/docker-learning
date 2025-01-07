@@ -4,6 +4,8 @@
 Images are multi-layered self-contained files that act as the template for creating containers. They are like a frozen, read-only copy of a container. Images can be exchanged through registries.
 Containers are just images in running state. When you obtain an image from the internet and run a container using that image, you essentially create another temporary writable layer on top of the previous read-only ones
 
+![Docker Images](https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Frdlipe7r7g8fenj7ahg4.png)
+
 ### Key  image features
 - A docker image is a snapshot of the filesystem + some metadata 
 - Identified by unique hex IDs
