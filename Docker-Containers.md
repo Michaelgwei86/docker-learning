@@ -39,6 +39,17 @@ docker run docker/whalesay ls /
 ```
 ---
 
+- Running Jenkins as a container
+
+```
+docker run -d --name jenkins/jenkins -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
+```
+- This runs Jenkins as a container image
+- To get the Administrative password of Jenkins
+```
+docker exec <CONTAINER_ID_or_NAME> cat /var/jenkins_home/secrets/initialAdminPassword
+
+```
 2. **Listing containers**
 
 - To check currently running containers.
