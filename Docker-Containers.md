@@ -13,6 +13,8 @@ As a result of eliminating the entire guest operating system layer, containers a
 
 ## Managing Containers
 
+![Docker Containers](https://linuxiac.b-cdn.net/wp-content/uploads/2021/06/what-is-docker-container.png)
+
 1. **Running a container from an image**
 
 ```
