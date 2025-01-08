@@ -46,6 +46,7 @@ docker run -d --name jenkins/jenkins -p 8080:8080 -p 50000:50000 -v jenkins_home
 ```
 - This runs Jenkins as a container image
 - To get the Administrative password of Jenkins
+
 ```
 docker exec <CONTAINER_ID_or_NAME> cat /var/jenkins_home/secrets/initialAdminPassword
 
@@ -123,6 +124,22 @@ docker rm -f $(docker ps -qa)
 6. **Run a container in background**
 
 To keep a container running in the background, supply the `-d` command line option during container startup:
+
+- Let us try running `nginx` container in foreground 
+
+```
+docker run nginx
+```
+
+You will notice you can't access the terminal again. To access the terminal type `exit` or press `ctrl + C`
+
+- To run a container in detached mode, let's rerun the above container in detached mode
+
+```
+docker run -d nginx
+```
+
+- Another example with the `busybox` image
 
 ```
 docker run -d busybox

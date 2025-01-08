@@ -1,0 +1,55 @@
+version: '3.8' # Defines the Docker Compose file format version
+
+services:
+  prometheus:
+    image: prom/prometheus:latest # Prometheus official image
+    container_name: prometheus # Container name
+    ports:
+      - "9090:9090" # Expose Prometheus on port 9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro # Mount Prometheus config file
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml' # Specify the configuration file
+      - '--storage.tsdb.path=/prometheus' # Path for storing metrics data
+      - '--storage.tsdb.retention.time=15d' # Retention period for metrics data
+    networks:
+      - monitoring # Attach to the monitoring network
+
+  grafana:
+    image: grafana/grafana:latest # Grafana official image
+    container_name: grafana # Container name
+    ports:
+      - "3000:3000" # Expose Grafana on port 3000
+    environment: # Set environment variables for Grafana
+      - GF_SECURITY_ADMIN_USER=admin # Admin username
+      - GF_SECURITY_ADMIN_PASSWORD=admin # Admin password
+    volumes:
+      - grafana-data:/var/lib/grafana # Persist Grafana data
+    depends_on:
+      - prometheus # Ensure Prometheus starts before Grafana
+    networks:
+      - monitoring # Attach to the monitoring network
+
+  node_exporter:
+    image: prom/node-exporter:latest # Node Exporter official image
+    container_name: node_exporter # Container name
+    ports:
+      - "9100:9100" # Expose Node Exporter metrics on port 9100
+    networks:
+      - monitoring # Attach to the monitoring network
+
+  app:
+    image: your-app-image:latest # Replace with your application image
+    container_name: monitored_app # Container name
+    ports:
+      - "8080:8080" # Expose your application on port 8080
+    networks:
+      - monitoring # Attach to the monitoring network
+
+volumes:
+  grafana-data: # Volume for Grafana data persistence
+    driver: local
+
+networks:
+  monitoring: # Define a custom network for the services
+    driver: bridge
