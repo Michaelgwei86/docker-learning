@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  webapp:
+    build:
+      context: ./Flask-App
+      dockerfile: Dockerfile
+    container_name: jjtech-container
+    ports:
+      - 8085:8080
+    networks:
+      - jjtech-frontier-network
+    volumes:
+      - jjtech-volume:/app
+    restart: always
+  
+  mysql-database:
+    image: mysql
+    ports: 
+      - 3306
+    container_name: mysql-container
+    volumes:
+      - database-vol:/var/lib/mysql
+    networks:
+      - backend-network
+
+networks:
+  jjtech-frontier-network:
+  backend-network:
+volumes:
+  jjtech-volume:
+  database-vol:
+
+  

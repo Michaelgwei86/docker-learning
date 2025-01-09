@@ -1,4 +1,4 @@
-version: '3.8' # Defines the Docker Compose file format version
+version: '2.27' # Defines the Docker Compose file format version
 
 services:
   prometheus:
