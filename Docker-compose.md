@@ -260,34 +260,3 @@ services:
 volumes:
   db_data
 ```
-### Scenario: Deploying a Multi-Service Application
-
-1. Start Services
-
-```
-docker-compose up -d
-```
-- Deploys an `NGINX` web server and a `PostgreSQL` database.
-
-2. Scale Services
-```
-docker-compose up --scale web=3
-```
-- Runs `3` instances of the `web` service for high availability.
-
-3. Check Logs
-```
-docker-compose logs -f
-```
-- Monitor real-time `logs` of all services.
-
-4. Stop Services
-```
-docker-compose stop
-```
-
-5. Clean Up Resources
-```
-docker-compose down -v
-```
-- Stops and removes `containers`, `networks`, and `volumes`.
