@@ -2,31 +2,7 @@
 
 A simple distributed application running across multiple Docker containers.
 
-## Getting started
-
-Download [Docker Desktop](https://www.docker.com/products/docker-desktop) for Mac or Windows. [Docker Compose](https://docs.docker.com/compose) will be automatically installed. On Linux, make sure you have the latest version of [Compose](https://docs.docker.com/compose/install/).
-
-This solution uses Python, Node.js, .NET, with Redis for messaging and Postgres for storage.
-
-Run in this directory to build and run the app:
-
-```shell
-docker compose up -d
-```
-
-The `vote` app will be running at [http://localhost:5000](http://localhost:5000), and the `results` will be at [http://localhost:5001](http://localhost:5001).
-
-Alternately, if you want to run it on a [Docker Swarm](https://docs.docker.com/engine/swarm/), first make sure you have a swarm. If you don't, run:
-
-```shell
-docker swarm init
-```
-
-Once you have your swarm, in this directory run:
-
-```shell
-docker stack deploy --compose-file docker-stack.yml vote
-```
+This solution uses `Python`, `Node.js`, `.NET`, with `Redis` for messaging and `Postgres` for storage.
 
 ## Architecture
 
@@ -38,10 +14,34 @@ docker stack deploy --compose-file docker-stack.yml vote
 * A [Postgres](https://hub.docker.com/_/postgres/) database backed by a Docker volume
 * A [Node.js](/result) web app which shows the results of the voting in real time
 
+## Configuration steps
+
+1. To deploy the application with `docker-compose` using pre-built images, 
+
+- Move to the Docker-compose directory
+
+```
+cd Docker-compose
+```
+
+- To run the application, run in this directory:
+
+```
+docker compose up -d
+```
+
+2. To deploy the application with `docker-compose` using source files and directories i.e. `healthchecks`, `result`, `seed-data`, `vote`, `worker` each container their respective dockerfiles,
+
+- While in the `Docker-compose` directory, move to the `voting-app` directory and run the following command in this directory to build and run the app:
+
+```
+docker compose up -d
+```
+
+The `vote` app will be running at [http://ince:5000](http://localhost:5000), and the `results` will be at [http://localhost:5001](http://localhost:5001).
+
 ## Notes
 
 The voting application only accepts one vote per client browser. It does not register additional votes if a vote has already been submitted from a client.
 
-This isn't an example of a properly architected perfectly designed distributed app... it's just a simple
-example of the various types of pieces and languages you might see (queues, persistent data, etc), and how to
-deal with them in Docker at a basic level.
+This isn't an example of a properly architected perfectly designed distributed app... it's just a simple example of the various types of pieces and languages you might see (queues, persistent data, etc), and how to deal with them in Docker at a basic level.
