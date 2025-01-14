@@ -251,7 +251,7 @@ docker kill mynginx
 
 Stopping a container doesn't delete it. Use `docker ps -a` to see your stopped container.
 
-12. **Debugging a container**
+## Troubleshooting containers
 
 - *Entering in a running container*
 To execute operations in a container, use the `docker exec` command. Sometimes this is called `"entering the container"` as all commands are executed inside the container.
@@ -291,6 +291,15 @@ docker logs --follow --tail 10 7786807d8084
 ---
 
 This command basically shows the standard output of the container process (the process with `pid 1`).
+
+- *Inspecting a container*
+
+To get all details of the container 
+
+```
+docker inspect <container-id>
+```
+---
 
 
 
