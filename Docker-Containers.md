@@ -195,7 +195,7 @@ docker volume inspect <volume-name>
 docker run --rm -it -v <host-volume-path>:<container-volume-path> <container-image>
 ```
 
-**Mounting a host directory `/home/ec2-user/data` file directory as a persistent volume for Jenkins**
+**Mounting a host directory `/home/ec2-user/data` file directory as a persistent volume for `Jenkins` container**
 
 - Create directory on host machine
 
