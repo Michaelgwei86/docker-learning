@@ -177,14 +177,23 @@ A Docker volume is a file or directory which persists beyond the lifetime of the
 
 ![Docker Volume](https://i0.wp.com/digitalvarys.com/wp-content/uploads/2021/05/image.png?resize=568%2C445)
 
-Add a volume with the -v command line option:
+- Listing available volume 
 
 ```
-docker run -d -v "/data" awesome/app bootstrap.sh
+docker volume ls
 ```
----
 
-This will create a volume and mount it to the path `/data` inside the container.
+- To inspect a volume 
+
+```
+docker volume inspect <volume-name>
+```
+
+- Run a Container with the Volume
+
+```
+docker run --rm -it -v <host-volume-path>:<container-volume-path> <container-image>
+```
 
 **Mounting a host directory `/home/ec2-user/data` file directory as a persistent volume for Jenkins**
 
