@@ -175,6 +175,8 @@ In order to use ports on the host have been exposed in an image (via the `EXPOSE
 
 A Docker volume is a file or directory which persists beyond the lifetime of the container. It is possible to mount a host file or directory into a container as a volume (bypassing the UnionFS).
 
+![Docker Volume](https://assets.community.aws/a/2mmxCn0jAMBYIHPgM5UxXIzLbgg/1_Kc.webp?imgSize=691x444)
+
 Add a volume with the -v command line option:
 
 ```
