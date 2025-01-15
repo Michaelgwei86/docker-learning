@@ -173,47 +173,12 @@ In order to use ports on the host have been exposed in an image (via the `EXPOSE
 
 9. **Assigning a volume to a container**
 
-A Docker volume is a file or directory which persists beyond the lifetime of the container. It is possible to mount a host file or directory into a container as a volume (bypassing the UnionFS).
-
-![Docker Volume](https://i0.wp.com/digitalvarys.com/wp-content/uploads/2021/05/image.png?resize=568%2C445)
-
-- Listing available volume 
-
-```
-docker volume ls
-```
-
-- To inspect a volume 
-
-```
-docker volume inspect <volume-name>
-```
-
-- Run a Container with the Volume
+Run a Container with a Volume
 
 ```
 docker run --rm -it -v <host-volume-path>:<container-volume-path> <container-image>
 ```
-
-**Mounting a host directory `/home/ec2-user/data` file directory as a persistent volume for `Jenkins` container**
-
-- Create directory on host machine
-
-```
-mkdir -p /home/ec2-user/data
-```
-- Run the Jenkins Container with the Volume Mounted
-```
-docker run -d --name jenkins05 -p 8082:8080 -p 50050:50000 -v /home/ec2-user/data:/var/jenkins_home jenkins/jenkins:lts
-```
-- To confirm that the volume is mounted correctly
-
-```
-docker exec -it -u root <container_id> bash
-```
-
----
-
+- `-v` <host-volume-path>:<container-volume-path> Mounts the <host-volume-path> volume of the host to /<container-volume-path> inside the <container-image> container.
 
 10. **Log into a running container**
 
@@ -264,13 +229,14 @@ docker exec -it container_id bash
 or 
 
 ```
-docker exec -it container_id /bin/sh
+docker exec -it container_id sh
 ```
 ---
 
 - *Monitoring resource usage*
 
-Inspecting system resource usage is an efficient way to find misbehaving applications. This example is an equivalent of the traditional top command for containers:
+Inspecting system resource usage is an efficient way to find misbehaving applications. This example is an equivalent of the traditional top command for containers
+
 ```
 docker stats
 ```
